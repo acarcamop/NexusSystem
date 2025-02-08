@@ -21,12 +21,14 @@ class UserResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-user-group';
     protected static ?string $navigationLabel = 'Usuarios'; 
+    protected static ?string $modelLabel = 'Usuario';
 
     public static function form(Form $form): Form
     {
         
         return $form
             ->schema([
+        
                 Forms\Components\TextInput::make('nombre')
                     ->required()
                     ->maxLength(255),
