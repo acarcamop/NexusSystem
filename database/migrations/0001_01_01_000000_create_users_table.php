@@ -20,8 +20,11 @@ return new class extends Migration
             $table->rememberToken();
             $table->timestamps();
             $table->enum('estado_usuario', ['activo', 'inactivo', 'suspendido'])->default('activo');
-            $table->string('telefono')->nullable(); 
+            $table->string('correo_alternativo')->nullable();
+            $table->string('telefono_1')->nullable(); 
+            $table->string('telefono_2')->nullable(); 
             $table->string('direccion_1')->nullable(); 
+            $table->string('direccion_2')->nullable(); 
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {
