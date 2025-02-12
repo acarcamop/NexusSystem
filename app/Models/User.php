@@ -48,12 +48,6 @@ class User extends Authenticatable implements MustVerifyEmail
      * @return array<string, string>
      */
 
-     public function setPasswordAttribute($value)
-     {
-         // Encriptar la contraseña antes de guardarla
-         $this->attributes['password'] = Hash::make($value);
-     }
-
     protected function casts(): array
     {
         return [

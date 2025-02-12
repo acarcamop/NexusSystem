@@ -1,17 +1,16 @@
 <?php
 
-namespace App\Filament\Resources\UserResource\Pages;
+namespace App\Filament\Resources\ClienteResource\Pages;
 
-use App\Filament\Resources\UserResource;
+use App\Filament\Resources\ClienteResource;
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
 use Filament\Support\Enums\ActionSize;
 
-class ListUsers extends ListRecords
+class ListClientes extends ListRecords
 {
-    protected static string $resource = UserResource::class;
+    protected static string $resource = ClienteResource::class;
 
-    
     protected function getHeaderActions(): array
     {
         return [

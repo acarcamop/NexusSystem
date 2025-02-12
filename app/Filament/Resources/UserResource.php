@@ -59,7 +59,8 @@ class UserResource extends Resource
                     ->tel()
                     ->maxLength(255)
                     ->nullable()
-                    ->default(null),
+                    ->default(null)
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Forms\Components\TextInput::make('direccion_1')
                     ->maxLength(255)
                     ->required()
@@ -67,7 +68,7 @@ class UserResource extends Resource
                 Forms\Components\TextInput::make('direccion_2')
                     ->maxLength(255)
                     ->nullable()
-                    ->default(null),
+                    ->default(null)
             ]);
     }
 
@@ -75,9 +76,11 @@ class UserResource extends Resource
 {
     return $table
         ->columns([
+            Tables\Columns\TextColumn::make('id')
+                ->searchable(),
             Tables\Columns\TextColumn::make('nombre')
                 ->searchable(),
-            Tables\Columns\TextColumn::make('email')
+            Tables\Columns\TextColumn::make('email')->label('Correo Electronico')
                 ->searchable(),
             Tables\Columns\TextColumn::make('email_verified_at')->label('Fecha Verificación')
                 ->date()
@@ -109,11 +112,13 @@ class UserResource extends Resource
             Tables\Columns\TextColumn::make('telefono_1')
                 ->searchable(),
             Tables\Columns\TextColumn::make('telefono_2')
-                ->searchable(),
+                ->searchable()
+                ->toggleable(isToggledHiddenByDefault: true),
             Tables\Columns\TextColumn::make('direccion_1')
                 ->searchable(),
             Tables\Columns\TextColumn::make('direccion_2')
-                ->searchable(),
+                ->searchable()
+                ->toggleable(isToggledHiddenByDefault: true),
         ])
         ->filters([
             //
