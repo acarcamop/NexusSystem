@@ -26,7 +26,6 @@ class CreateClientesTable extends Migration
             $table->string('direccion_1'); 
             $table->string('direccion_2')->nullable(); 
             $table->text('informacion_adicional')->nullable();
-
             $table->enum('estado_cliente', ['activo', 'inactivo', 'suspendido'])->default('activo');
             $table->timestamps();
         });

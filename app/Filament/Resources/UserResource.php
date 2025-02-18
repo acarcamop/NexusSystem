@@ -21,7 +21,19 @@ class UserResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-user-group';
     protected static ?string $navigationLabel = 'Usuarios'; 
     protected static ?string $modelLabel = 'Usuario';
+    protected static ?string $navigationGroup = 'Administrador de Usuarios';
+    protected static ?int $navigationSort = 2;
 
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::count();
+    }
+    
+    public static function getNavigationBadgeColor(): ?string
+    {
+        return 'primary'; 
+    }
+    
     public static function form(Form $form): Form
     {
         return $form
@@ -59,8 +71,8 @@ class UserResource extends Resource
                     ->tel()
                     ->maxLength(255)
                     ->nullable()
-                    ->default(null)
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->default(null),
+                
                 Forms\Components\TextInput::make('direccion_1')
                     ->maxLength(255)
                     ->required()
@@ -68,7 +80,7 @@ class UserResource extends Resource
                 Forms\Components\TextInput::make('direccion_2')
                     ->maxLength(255)
                     ->nullable()
-                    ->default(null)
+                    ->default(null),
             ]);
     }
 

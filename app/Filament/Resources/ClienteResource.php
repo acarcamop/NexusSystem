@@ -18,7 +18,18 @@ class ClienteResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-briefcase';
     protected static ?string $navigationLabel = 'Clientes'; 
     protected static ?string $modelLabel = 'Cliente';
+    protected static ?string $navigationGroup = 'Administrador de Clientes';
+    protected static ?int $navigationSort = 3;
 
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::count();
+    }
+    
+    public static function getNavigationBadgeColor(): ?string
+    {
+        return 'primary'; 
+    }
 
     public static function form(Form $form): Form
     {
