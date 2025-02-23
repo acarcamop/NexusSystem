@@ -68,9 +68,12 @@ class ProductoResource extends Resource
                     ->relationship('categoria', 'nombre_categoria') // Relación con la tabla de categorías
                     ->required()
                     ->label('Categoría del Producto'),
-                Forms\Components\TextInput::make('proveedor')
-                    ->maxLength(255)
-                    ->label('Proveedor'),
+
+                    Forms\Components\Select::make('proveedor_id')
+                    ->relationship('proveedor', 'nombre')//Relacion con la tabla Proveedor
+                    ->required()
+                    ->label('proveedor'),
+
             ]);
     }
 
@@ -101,8 +104,8 @@ class ProductoResource extends Resource
                         'warning' => 'agotado',
                     ])
                     ->sortable(),
-                TextColumn::make('proveedor')
-                    ->label('Proveedor'),
+                      Tables\Columns\TextColumn::make('proveedor.nombre')
+                    ->label('Proveedor'), // Usar la relación para mostrar el nombre del proveedor
                     
                 TextColumn::make('created_at')
                     ->label('Fecha de Creación')
