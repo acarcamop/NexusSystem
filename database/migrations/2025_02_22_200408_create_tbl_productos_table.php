@@ -20,8 +20,9 @@ return new class extends Migration
             $table->enum('estado_producto', ['activo', 'inactivo', 'agotado'])->default('activo'); 
             $table->unsignedBigInteger('id_categoria');
             $table->foreign('id_categoria')->references('id_categoria')->on('tbl_categorias')->onDelete('cascade');  
-            $table->string('proveedor')->nullable(); 
-            $table->timestamps();  
+            $table->unsignedBigInteger('proveedor_id')->nullable(); 
+            $table->foreign('proveedor_id')->references('id_proveedor')->on('tbl_proveedores')->onDelete('cascade'); 
+            $table->timestamps(); 
         });
     }
     /**
