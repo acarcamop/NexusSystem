@@ -24,3 +24,4 @@ class Categoria extends Model
     }
 }
 
+

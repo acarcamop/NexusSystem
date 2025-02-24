@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Filament\Resources;
+use Illuminate\Validation\Rule;
 
 use App\Filament\Resources\CategoriaResource\Pages;
 use App\Models\Categoria;
@@ -32,32 +33,32 @@ class CategoriaResource extends Resource
         return 'primary'; 
     }
     // Formulario de creación y edición de categorías
-    public static function form(Form $form): Form
-    {
-        return $form
-            ->schema([
-                Forms\Components\TextInput::make('nombre_categoria')
-                    ->required()
-                    ->maxLength(255)
-                    ->label('Nombre de la Categoría'),
-                    Section::make('Descripción de la Categoria')
-                    ->schema([
-                        Forms\Components\Textarea::make('descripcion')
-                 
-                            ->label('Descripción de Categoria')
-                            ->rows(4),
-                    ])
-                    ->collapsible(),
-                    Forms\Components\Select::make('estado_categoria')
-                    ->options([
-                        'activa' => 'Activa',
-                        'inactiva' => 'Inactiva',
-                        'suspendida' => 'Suspendida',
-                    ])
-                    ->required()
-                    ->label('Estado Categoria'),
-            ]);
-    }
+ public static function form(Form $form): Form
+{
+    return $form
+        ->schema([
+            Forms\Components\TextInput::make('nombre_categoria')
+                ->required()
+                ->maxLength(255)
+                ->label('Nombre'),
+            Forms\Components\Select::make('estado_categoria')
+                ->options([
+                    'activa' => 'Activa',
+                    'inactiva' => 'Inactiva',
+                    'suspendida' => 'Suspendida',
+                ])
+                ->required()
+                ->label('Estado'),
+            Section::make('Descripción')
+                ->schema([
+                    Forms\Components\Textarea::make('descripcion')
+                        ->label('')
+                        ->rows(4),
+                ])
+                ->collapsible(),
+        ]);
+}
+
 
     // Definición de la tabla de categorías
     public static function table(Table $table): Table
@@ -65,20 +66,21 @@ class CategoriaResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('id_categoria')
-                    ->label('id')
+                    ->label('ID')
                     ->sortable()
                     ->searchable(),
                 TextColumn::make('nombre_categoria')
-                    ->label('Nombre Categoría')
+                    ->label('Nombre')
                     ->searchable(),
                 TextColumn::make('descripcion')
                     ->label('Descripción'),
-                    BadgeColumn::make('estado_categoria')
-                ->formatStateUsing(fn ($state) => ucfirst($state))
+                BadgeColumn::make('estado_categoria')
+                    ->formatStateUsing(fn ($state) => ucfirst($state))
+                    ->label(fn () => 'Estado')
                 ->colors([
                     'success' => 'activa',
                     'danger' => 'inactiva',
-                    'warning' => 'suspendid',
+                    'warning' => 'suspendida',
                 ])
                 ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
@@ -106,7 +108,11 @@ class CategoriaResource extends Resource
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(), // Acción para eliminar en bulk
                 ]),
-            ]);
+                
+            ])
+
+            ->defaultSort('created_at', 'desc'); // Ordenar por fecha de creación en orden descendente
+
     }
 
     // Relaciones si las necesitas, en este caso no hay ninguna relacionada
