@@ -41,9 +41,21 @@ class ProductoResource extends Resource
                     ->required()
                     ->maxLength(255)
                     ->label('Nombre Producto'),
+
+                Forms\Components\Select::make('id_categoria')
+                    ->relationship('categoria', 'nombre_categoria', fn($query) => $query->where('estado_categoria', 'activa'))
+                    ->required()
+                    ->label('Categoría del Producto')
+                    ->reactive(),
+
+                Forms\Components\Select::make('proveedor_id')
+                    ->relationship('proveedor', 'nombre', fn($query) => $query->where('estado_proveedor', 'activo'))
+                    ->required()
+                    ->label('Proveedor')
+                    ->reactive(), 
                     Section::make('Descripción del Producto')
                     ->schema([
-                        Forms\Components\Textarea::make('descripcion')
+                Forms\Components\Textarea::make('descripcion')
                             ->label('Descripción del Producto')
                             ->rows(4), // Ajustar el tamaño del campo según lo necesites
                     ])
@@ -64,45 +76,51 @@ class ProductoResource extends Resource
                     ])
                     ->default('activo')
                     ->label('Estado del Producto'),
-                Forms\Components\Select::make('id_categoria')
-                    ->relationship('categoria', 'nombre_categoria') // Relación con la tabla de categorías
-                    ->required()
-                    ->label('Categoría del Producto'),
-                Forms\Components\TextInput::make('proveedor')
-                    ->maxLength(255)
-                    ->label('Proveedor'),
-            ]);
-    }
 
+                ]);
+            }
+        
     // Definición de la tabla de productos
     public static function table(Table $table): Table
     {
         return $table
             ->columns([
                 TextColumn::make('id_producto')
-                    ->label('id')
+                    ->label('ID')
                     ->sortable()
                     ->searchable(),
                 TextColumn::make('nombre')
-                    ->label('Nombre Producto')
+                    ->label('Nombre')
                     ->searchable(),
+
+               Tables\Columns\TextColumn::make('categoria.nombre_categoria')
+                     ->label('Categoría'), // Usar la relación para mostrar el nombre de la categoría
+    
                 TextColumn::make('descripcion')
                     ->label('Descripción'),
+    
+                Tables\Columns\TextColumn::make('proveedor.nombre')
+                    ->label('Proveedor'), // Usar la relación para mostrar el nombre del proveedor
+    
                 TextColumn::make('precio')
                    ->money('hnl')
                     ->label('Precio'),
+    
                 TextColumn::make('cantidad')
                     ->label('Cantidad'),
+    
                 BadgeColumn::make('estado_producto')
                     ->formatStateUsing(fn ($state) => ucfirst($state))
+                    ->label('Estado')
                     ->colors([
                         'success' => 'activo',
                         'danger' => 'inactivo',
                         'warning' => 'agotado',
+                    
                     ])
                     ->sortable(),
-                TextColumn::make('proveedor')
-                    ->label('Proveedor'),
+                      Tables\Columns\TextColumn::make('proveedor.nombre')
+                    ->label('Proveedor'), // Usar la relación para mostrar el nombre del proveedor
                     
                 TextColumn::make('created_at')
                     ->label('Fecha de Creación')
@@ -129,7 +147,8 @@ class ProductoResource extends Resource
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(), // Acción para eliminar en bulk
                 ]),
-            ]);
+            ])
+            ->defaultSort('created_at', 'desc'); // Ordenar por fecha de creación en orden descendente
     }
 
     // Relaciones si las necesitas, en este caso no hay ninguna otra relación
