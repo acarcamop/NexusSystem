@@ -142,7 +142,8 @@ class UserResource extends Resource
             Tables\Actions\BulkActionGroup::make([
                 Tables\Actions\DeleteBulkAction::make(),
             ]),
-        ]);
+        ])
+        ->defaultSort('created_at', 'desc'); // Ordenar por fecha de creación en orden descendente
 }
     public static function getRelations(): array
     {
