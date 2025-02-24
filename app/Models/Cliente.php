@@ -33,4 +33,10 @@ class Cliente extends Model
         'creado_en',
         'actualizado_en',
     ];
+
+    public function venta()
+    {
+        return $this->belongsTo(Venta::class, 'id_cliente', 'id');
+    }
+
 }

@@ -21,7 +21,7 @@ class Producto extends Model
         'cantidad',
         'estado_producto',
         'id_categoria',
-        'proveedor',
+        'id_proveedor',
     ];
 
     // Relación con la categoría (Cada producto pertenece a una categoría)
@@ -29,5 +29,10 @@ class Producto extends Model
     {
         return $this->belongsTo(Categoria::class, 'id_categoria', 'id_categoria');
     }
+    public function proveedor()
+    {
+        return $this->belongsTo(Proveedor::class, 'id_proveedor');
+    }
+
 }
 

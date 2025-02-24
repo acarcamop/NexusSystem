@@ -34,45 +34,52 @@ class ProductoResource extends Resource
 
     // Formulario de creación y edición de productos
     public static function form(Form $form): Form
-    {
-        return $form
-            ->schema([
-                Forms\Components\TextInput::make('nombre')
-                    ->required()
-                    ->maxLength(255)
-                    ->label('Nombre Producto'),
-                    Section::make('Descripción del Producto')
-                    ->schema([
-                        Forms\Components\Textarea::make('descripcion')
-                            ->label('Descripción del Producto')
-                            ->rows(4), // Ajustar el tamaño del campo según lo necesites
-                    ])
-                    ->collapsible(),
-                Forms\Components\TextInput::make('precio')
-                    ->required()
-                    ->numeric()
-                    ->label('Precio'),
-                Forms\Components\TextInput::make('cantidad')
-                    ->required()
-                    ->numeric()
-                    ->label('Cantidad'),
-                Forms\Components\Select::make('estado_producto')
-                    ->options([
-                        'activo' => 'Activo',
-                        'inactivo' => 'Inactivo',
-                        'agotado' => 'Agotado',
-                    ])
-                    ->default('activo')
-                    ->label('Estado del Producto'),
-                Forms\Components\Select::make('id_categoria')
-                    ->relationship('categoria', 'nombre_categoria') // Relación con la tabla de categorías
-                    ->required()
-                    ->label('Categoría del Producto'),
-                Forms\Components\TextInput::make('proveedor')
-                    ->maxLength(255)
-                    ->label('Proveedor'),
-            ]);
-    }
+{
+    return $form
+        ->schema([
+            Forms\Components\TextInput::make('nombre')
+                ->required()
+                ->maxLength(255)
+                ->label('Nombre Producto'),
+            Section::make('Descripción del Producto')
+                ->schema([
+                    Forms\Components\Textarea::make('descripcion')
+                        ->label('Descripción del Producto')
+                        ->rows(4),
+                ])
+                ->collapsible(),
+            Forms\Components\TextInput::make('precio')
+                ->required()
+                ->numeric()
+                ->label('Precio'),
+            Forms\Components\TextInput::make('cantidad')
+                ->required()
+                ->numeric()
+                ->label('Cantidad'),
+            Forms\Components\Select::make('estado_producto')
+                ->options([
+                    'activo' => 'Activo',
+                    'inactivo' => 'Inactivo',
+                    'agotado' => 'Agotado',
+                ])
+                ->default('activo')
+                ->label('Estado del Producto'),
+            Forms\Components\Select::make('id_categoria')
+                ->relationship('categoria', 'nombre_categoria') // Relación con la tabla de categorías
+                ->required()
+                ->label('Categoría del Producto'),
+                Forms\Components\Select::make('id_proveedor')
+                ->options(
+                    \App\Models\Proveedor::all()->pluck('nombre_comercial', 'id_proveedor')->toArray()
+                ) // Esto obtiene todos los proveedores y sus ids
+                ->required()
+                ->label('Proveedor')
+                ->searchable(),
+            
+        ]);
+}
+
+    
 
     // Definición de la tabla de productos
     public static function table(Table $table): Table
@@ -101,9 +108,13 @@ class ProductoResource extends Resource
                         'warning' => 'agotado',
                     ])
                     ->sortable(),
-                TextColumn::make('proveedor')
-                    ->label('Proveedor'),
-                    
+                // Relacionamos el proveedor para mostrar su nombre en lugar del ID
+                TextColumn::make('proveedor.nombre_comercial')
+                ->label('Proveedor')
+                ->sortable(),
+                TextColumn::make('categoria.nombre_categoria')
+                ->label('Categoria')
+                ->sortable(),
                 TextColumn::make('created_at')
                     ->label('Fecha de Creación')
                     ->date()
@@ -131,6 +142,7 @@ class ProductoResource extends Resource
                 ]),
             ]);
     }
+    
 
     // Relaciones si las necesitas, en este caso no hay ninguna otra relación
     public static function getRelations(): array

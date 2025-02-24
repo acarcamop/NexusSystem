@@ -23,7 +23,7 @@ class UserResource extends Resource
     protected static ?string $modelLabel = 'Usuario';
     protected static ?string $navigationGroup = 'Administrador de Usuarios';
     protected static ?int $navigationSort = 2;
-
+    //Retorna conteo de Usuarios
     public static function getNavigationBadge(): ?string
     {
         return static::getModel()::count();
@@ -33,7 +33,7 @@ class UserResource extends Resource
     {
         return 'primary'; 
     }
-    
+        //Formulario
     public static function form(Form $form): Form
     {
         return $form
